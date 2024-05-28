@@ -97,6 +97,11 @@ Improvements to clang-tidy
 New checks
 ^^^^^^^^^^
 
+- New :doc:`misc-customizable-rules
+  <clang-tidy/checks/misc/customizable-rules>` check.
+
+  FIXME: add release notes.
+
 New check aliases
 ^^^^^^^^^^^^^^^^^
 

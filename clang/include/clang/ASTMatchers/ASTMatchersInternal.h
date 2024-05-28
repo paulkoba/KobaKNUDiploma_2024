@@ -653,7 +653,7 @@ public:
     }
   };
 
-private:
+public: // ???
   // For Matcher<T> <=> Matcher<U> conversions.
   template <typename U> friend class Matcher;
 

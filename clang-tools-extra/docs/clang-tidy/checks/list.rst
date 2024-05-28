@@ -256,6 +256,7 @@ Clang-Tidy Checks
    `llvmlibc-restrict-system-libc-headers <llvmlibc/restrict-system-libc-headers.html>`_, "Yes"
    `misc-confusable-identifiers <misc/confusable-identifiers.html>`_,
    `misc-const-correctness <misc/const-correctness.html>`_, "Yes"
+   `misc-customizable-rules <misc/customizable-rules.html>`_, "Yes"
    `misc-definitions-in-headers <misc/definitions-in-headers.html>`_, "Yes"
    `misc-header-include-cycle <misc/header-include-cycle.html>`_,
    `misc-include-cleaner <misc/include-cleaner.html>`_, "Yes"

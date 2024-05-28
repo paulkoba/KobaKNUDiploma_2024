@@ -18,6 +18,7 @@ add_custom_target(genconfusable DEPENDS Confusables.inc)
 
 add_clang_library(clangTidyMiscModule
   ConstCorrectnessCheck.cpp
+  CustomizableRulesCheck.cpp
   DefinitionsInHeadersCheck.cpp
   ConfusableIdentifierCheck.cpp
   HeaderIncludeCycleCheck.cpp
@@ -39,6 +40,7 @@ add_clang_library(clangTidyMiscModule
   UnusedParametersCheck.cpp
   UnusedUsingDeclsCheck.cpp
   UseAnonymousNamespaceCheck.cpp
+  Yaml.cpp
 
   LINK_LIBS
   clangAnalysis
@@ -49,6 +51,9 @@ add_clang_library(clangTidyMiscModule
   omp_gen
   genconfusable
   )
+
+set_source_files_properties(Yaml.cpp PROPERTIES COMPILE_OPTIONS -fexceptions)
+set_source_files_properties(CustomizableRulesCheck.cpp PROPERTIES COMPILE_OPTIONS -fexceptions)
 
 clang_target_link_libraries(clangTidyMiscModule
   PRIVATE
@@ -67,3 +72,38 @@ target_link_libraries(clangTidyMiscModule
   PRIVATE
   clangIncludeCleaner
   )
+
+include(FetchContent)
+
+FetchContent_Declare(yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG yaml-cpp-0.7.0)  #tag of a release
+
+FetchContent_GetProperties(yaml-cpp)
+
+if(NOT yaml-cpp_POPULATED)
+  message(STATUS "Fetching yaml-cpp...")
+  FetchContent_Populate(yaml-cpp)
+  add_subdirectory(${yaml-cpp_SOURCE_DIR} ${yaml-cpp_BINARY_DIR})
+endif()
+  
+# Create an export set
+install(TARGETS clangTidyMiscModule yaml-cpp
+        EXPORT MyExportSet
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin)
+
+# Export the export set
+install(EXPORT MyExportSet
+        DESTINATION share/cmake/MyProject)
+
+# Write the export set
+export(EXPORT MyExportSet
+       FILE MyProjectTargets.cmake)
+
+# Include the exported targets
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/share/cmake/MyProject)
+
+# Link the libraries
+target_link_libraries(clangTidyMiscModule PUBLIC yaml-cpp::yaml-cpp)
